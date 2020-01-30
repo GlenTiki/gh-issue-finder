@@ -1,0 +1,8 @@
+{
+	"name": "gh-issue-finder",
+	"version": 2,
+	"env": {
+		"GH_AUTH_TOKEN": "@gh-auth-token"
+	},
+	"cleanUrls": true
+}
