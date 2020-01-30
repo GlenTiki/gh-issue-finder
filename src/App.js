@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import styled, { ThemeProvider, keyframes } from 'styled-components'
 import queryString from 'query-string'
+import { Github } from '@icons-pack/react-simple-icons';
 
 const Container = styled.div`
 	color: ${props => props.theme.dark}
@@ -24,6 +25,7 @@ const Nav = styled.nav`
 const NavList = styled.ul`
 	display: flex;
 	flex-direction: row;
+	align-items: baseline;
 	padding: 0;
 	margin: 0;
 `
@@ -40,6 +42,18 @@ const CustomisedNavLink = styled(Link)`
 	&:hover {
     text-decoration: underline;
   }
+`
+
+const ExternalNavLink = styled.a`
+  color: ${props => props.theme.light};
+  fill: ${props => props.theme.light};
+	text-decoration: none;
+	&:hover {
+    text-decoration: underline;
+	}
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 `
 
 const PageTitle = styled.h1`
@@ -181,9 +195,8 @@ function App() {
 			<ThemeProvider theme={theme}>
         <Nav>
           <NavList>
-            <NavLink>
-              <CustomisedNavLink to="/">Home</CustomisedNavLink>
-            </NavLink>
+            <NavLink><CustomisedNavLink to="/">Home</CustomisedNavLink></NavLink>
+            <NavLink><ExternalNavLink href="https://github.com/glentiki/gh-issue-finder">Fork me on Github&nbsp;&nbsp;<Github size={24} /></ExternalNavLink></NavLink>
           </NavList>
         </Nav>
 
