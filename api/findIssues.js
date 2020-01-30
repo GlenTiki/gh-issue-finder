@@ -1,4 +1,5 @@
 const {send} = require('micro')
+const cors = require('micro-cors')()
 
 const octokit = require("@octokit/rest")({
 	auth: process.env.GH_AUTH_TOKEN
@@ -41,4 +42,4 @@ const handler = async (req, res) => {
   send(res, 200, { results: Array.from(dedupeMap.values()) })
 }
 
-module.exports = handler
+module.exports = cors(handler)
