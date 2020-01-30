@@ -88,6 +88,7 @@ const SearchResultContainer = styled.div`
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
+	min-width: 25%;
 
 	flex-wrap: no-wrap;
 	flex-shrink: 1;
@@ -119,6 +120,7 @@ const IssueDetails = styled.div`
 
 const IssueTitle = styled.h3`
 	margin: .2rem 0;
+	text-overflow: ellipsis;
 `
 
 const IssueAuthor = styled.p`
@@ -129,6 +131,16 @@ const FooterComp = styled.footer`
 	display: flex;
 	flex-align: center;
 	justify-content: center;
+
+	a {
+		color: ${props => props.theme.lightPrimary};
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: ${props => props.theme.primary};
+		text-decoration: underline;
+	}
 `
 
 const rotate360 = keyframes`
@@ -207,19 +219,30 @@ function Search(props) {
 	const org = search.org
 
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(false)
 	const [results, setResults] = useState([])
 
 	useEffect(() => {
 		if (!org || org === '') {
 			return;
 		}
+		setLoading(true)
+		setError(false)
+		setResults([])
 		fetch(`/api/findIssues?org=${org}`)
 		  .then(res => res.json())
 		  .then(({results}) => {
 				results.sort((a, b) => b.comments - a.comments)
 		  	setLoading(false)
 				setResults(results)
-		  })
+		    setError(false)
+	    })
+			.catch((e) => {
+				console.error(e)
+		    setError(true)
+		  	setLoading(false)
+		    setResults([])
+			})
 	}, [org])
 
 
@@ -230,7 +253,7 @@ function Search(props) {
 
 	return <Container>
 		{ loading ? <Spinner /> : <PageTitle>
-			{results.length === 0 ? 'No Results Found :(' : 'Search results'}
+			{results.length === 0 ? error ? 'Error finding issues - double check your search query matches the org you want to find!' : 'No Results Found :(' : 'Search results'}
 		</PageTitle>}
 		<SearchResultsContainer>
 			{results.map((result, index) => {
@@ -259,12 +282,13 @@ function Home(props) {
 		e.preventDefault()
 		if (input.current.value === '') return;
 
-		const org = input.current.value
+		const org = input.current.value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/\s]/gi, '')
+		input.current.value = org
 		props.history.push(`/search?org=${org}`)
 	}
 
 	return <Container>
-		<PageTitle>Enter a GitHub org to find open source issues to get started with...</PageTitle>
+		<PageTitle>Enter a GitHub org to find issues to contribute to...</PageTitle>
 		<Form onSubmit={submitSearch}>
 			<TextInput type="text" placeholder="Org..." name="org" ref={input} />
 			<Button type="submit">Search...</Button>
