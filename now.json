@@ -4,5 +4,13 @@
 	"env": {
 		"GH_AUTH_TOKEN": "@gh-auth-token"
 	},
-	"cleanUrls": true
+	"routes": [
+		{
+			"src": "/api/findIssues",
+			"methods": ["GET"],
+			"dest": "/api/findIssues.js"
+		},
+		{ "handle": "filesystem" },
+		{ "src": "/(.*)", "dest": "/index.html" }
+	]
 }
