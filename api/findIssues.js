@@ -22,7 +22,7 @@ const handler = async (req, res) => {
 	  return issues.data.items
   })))
   const items = itemSearchResults.flat()
-	console.log(items)
+
 	const dedupeMap = new Map()
   for (let item of items) {
 		const [_, orgMatch, repoNameMatch] = item.repository_url.match(/https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9\-_]+)\/([a-zA-Z0-9\-_]+)/)
