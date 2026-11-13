@@ -1,0 +1,4 @@
+scripts:
+  setup: |
+    set -euo pipefail
+    nice -n 10 npm ci
